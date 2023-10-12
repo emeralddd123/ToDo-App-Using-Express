@@ -12,6 +12,9 @@ morgan.token('host', function (req, res) {
 
 app.use(morgan(':method :host :status :res[content-length] - :response-time ms'))
 
+app.use(express.json()) // body parser: json
+app.use(express.urlencoded({ extended: true })); // body prser: formdata
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 

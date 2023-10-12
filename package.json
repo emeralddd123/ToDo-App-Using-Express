@@ -4,6 +4,7 @@
   "description": "app that help users manage their tasks, to-do lists, and responsibilities more effectively. It allows individuals or teams to create, organize, prioritize, and track tasks, ensuring they stay on top of their daily, weekly, or long-term goals.",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
