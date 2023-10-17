@@ -3,6 +3,7 @@ const Todo = require('../models/todo');
 
 async function createTodoService(userId, todoData) {
     try {
+        console.log(userId)
         const newTodo = await Todo.create({ ...todoData, user: userId });
         return { status: 201, message: 'Todo created', todo: newTodo };
     } catch (error) {
@@ -21,6 +22,24 @@ async function getTodosService(userId) {
         return { status: 500, message: 'Internal server error' };
     }
 }
+
+
+async function getTodoService (userId, todoId) {
+    try {
+        const todo = await Todo.findOne({ user: userId, _id:todoId, is_deleted: false });
+
+        if (!todo) {
+            return { status: 404, message: "Todo not found" };
+        }
+
+        console.log('not my fault man')
+        return { status: 200, todo };
+        
+    } catch (error) {
+        return { status: 500, message: "Internal server error" };
+    }
+};
+
 
 
 async function updateTodoService(userId, todoId, updateData) {
@@ -66,6 +85,7 @@ async function deleteTodoService(userId, todoId) {
 module.exports = {
     createTodoService,
     getTodosService,
+    getTodoService,
     updateTodoService,
     deleteTodoService,
 };
