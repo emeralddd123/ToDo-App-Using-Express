@@ -1,8 +1,22 @@
 const express = require('express');
 const authRouter = express.Router();
+const loginService = require('../../services/authService')
+const { validLoginCreation } = require('../../middlewares/userMiddleware')
 
-authRouter.post('/login', async (req, res) => {
-    //call login authService and return token to user
+
+authRouter.post('/login', validLoginCreation, async (req, res) => {
+    const loginData = {
+        username: req.body.username,
+        password: req.body.password,
+      };
+    
+      const result = await loginService(loginData);
+    
+      if (result.status === 201) {
+        res.status(result.status).json({ message: result.message, token: result.token });
+      } else {
+        res.status(result.status).json({ error: result.message });
+      }
 })
 
 

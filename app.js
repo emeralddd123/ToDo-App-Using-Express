@@ -5,7 +5,12 @@ const morgan = require('morgan')
 const port = process.env.PORT || 3000;
 const path = require('path');
 
+const connnectToDb = require('./dbConnection')
+
 const app = express();
+connnectToDb()
+
+
 morgan.token('host', function (req, res) {
     return req.hostname;
 });
@@ -21,8 +26,9 @@ app.set('view engine', 'ejs');
 const webRouter = require('./web/webRoutes');
 const apiRouter = require('./api/apiRoutes');
 
-app.use('/', webRouter);
 app.use('/api', apiRouter);
+app.use('/', webRouter);
+
 
 
 app.listen(port, () => {
