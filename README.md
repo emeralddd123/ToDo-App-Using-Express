@@ -60,5 +60,3 @@ The WebSite is located at [Do-it Web](https://do-it-ayx7.onrender.com)
 
 ## Screenshots
 
-- You can include screenshots of your application here to give users a glimpse of what to expect.
-
