@@ -3,13 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Bootstrap demo</title>
+    <title>Do-it</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous"
     />
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
   </head>
   <body>
     <div class="container">
@@ -18,70 +20,125 @@
       <h1>Welcome back, <%= user.username %></h1>
       <br />
       <br />
-      <button type="button" class="btn btn-primary">Add Task</button>
-      <br />
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">title</th>
-            <th scope="col">description</th>
-            <th scope="col">status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% tasks.forEach(function(task) { %>
-          <tr
-            class="task-row"
-            data-bs-toggle="modal"
-            data-bs-target="#taskModal<%= task.id %>"
-          >
-            <td><%= task.title %></td>
-            <td><%= task.description %></td>
-            <td><%= task.status %></td>
-          </tr>
-          <!-- Modal for Task <%= task.id %> -->
-          <div
-            class="modal fade"
-            id="taskModal<%= task.id %>"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="taskModalLabel"
-            aria-hidden="true"
-          >
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="taskModalLabel">Task Details</h5>
-                  <button
-                    type="button"
-                    class="close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                  >
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <!-- Task Details -->
-                  <p><strong>Title:</strong> <%= task.title %></p>
-                  <p><strong>Description:</strong> <%= task.description %></p>
-                  <p><strong>Status:</strong> <%= task.status %></p>
-                </div>
-                <div class="modal-footer">
-                  <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-bs-dismiss="modal"
-                  >
-                    Close
-                  </button>
-                </div>
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createTaskModal">
+        Add Task
+      </button>      <br />
+
+    <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">title</th>
+        <th scope="col">description</th>
+        <th scope="col">status</th>
+        <th scope="col">actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% tasks.forEach(function(task) { %>
+        <tr
+          class="task-row"
+          data-bs-toggle="modal"
+          data-bs-target="#taskModal<%= task.id %>"
+        >
+          <td><%= task.title %></td>
+          <td><%= task.description %></td>
+          <td><%= task.status %></td>
+          <td>
+            <i class="bi bi-pencil-square" data-bs-toggle="modal" data-bs-target="#editTaskModal<%= task.id %>"></i>
+          </td>
+        </tr>
+  
+        <!-- Modal for Editing Task <%= task.id %> -->
+        <div
+          class="modal fade"
+          id="editTaskModal<%= task.id %>"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="editTaskModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="editTaskModalLabel">Edit Task</h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <!-- Edit Task Form -->
+                <form action="/updateTask/<%= task.id %>" method="PUT">
+                  <div class="form-group">
+                    <label for="editTitle">Title:</label>
+                    <input type="text" class="form-control" id="editTitle" name="title" value="<%= task.title %>" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="editDescription">Description:</label>
+                    <textarea class="form-control" id="editDescription" name="description" required><%= task.description %></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="editStatus">Status:</label>
+                    <select class="form-control" id="editStatus" name="status" required>
+                      <option value="pending" <%= task.status === 'pending' ? 'selected' : '' %>>Pending</option>
+                      <option value="completed" <%= task.status === 'completed' ? 'selected' : '' %>>Completed</option>
+                    </select>
+                  </div>
+                  <div class="d-flex justify-content-end"> <!-- Align to the right -->
+                    <button type="submit" class="btn btn-primary">Update Task</button>
+                  </div>
+                </form>
+                <form action="/deleteTask/<%= task.id %>" method="DELETE">
+                    <input type="hidden" name="taskId" value="<%= task.id %>">
+                    <button type="submit" class="btn btn-danger">
+                      Delete
+                    </button>
+                  </form>
+                  
               </div>
             </div>
           </div>
-          <% }); %>
-        </tbody>
-      </table>
+        </div>
+      <% }); %>
+    </tbody>
+  </table>
+
+
+<!-- Create Task Modal -->
+<div class="modal fade" id="createTaskModal" tabindex="-1" role="dialog" aria-labelledby="createTaskModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createTaskModalLabel">Create Task</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Task creation form -->
+        <form action="/addTask" method="POST">
+          <div class="form-group">
+            <label for="createTitle">Title:</label>
+            <input type="text" class="form-control" id="createTitle" name="title" required>
+          </div>
+          <div class="form-group">
+            <label for="createDescription">Description:</label>
+            <textarea class="form-control" id="createDescription" name="description" required></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Create Task</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
     </div>
     <script>
       document.querySelectorAll(".task-row").forEach(function (row) {

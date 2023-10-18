@@ -5,7 +5,7 @@ const path = require('path');
 const loginService = require('../services/authService')
 const signupService = require('../services/userService')
 const webAuthMiddleware = require('../middlewares/webAuthMidldleware')
-const { getTodosService } = require('../services/todoService')
+const { getTodosService, createTodoService, updateTodoService } = require('../services/todoService')
 
 const webRouter = express.Router();
 
@@ -61,8 +61,31 @@ webRouter.post('/signup', async (req, res) => {
 
 });
 
-webRouter.get('/addTodo', (req, res) => {
-	res.render('addTodo')
+webRouter.post('/addTask', webAuthMiddleware, async (req, res) => {
+	const todoData = { title, description } = req.body
+	const userId = req.user._id
+
+	const response = await createTodoService(userId, todoData)
+
+	if (response.status === 201) {
+		return res.redirect('home')
+	}
+	res.json('an error occured')
+
 });
+
+
+webRouter.put('/updateTask/:id', webAuthMiddleware, async (req, res) => {
+	const updatedData = { title, description, status } = req.body
+	const userId = req.user._id
+	const todoId = req.params.id
+
+	const response = await updateTodoService(userId, todoId, updatedData)
+
+	if (response.status = 200) {
+		return res.redirect('home')
+	}
+	res.json('an error occured')
+})
 
 module.exports = webRouter;
