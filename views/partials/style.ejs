@@ -1,6 +1,8 @@
 <style>
   body {
-    background-color: #000;
+    background-color: #212121; /* Dark gray background */
+    font-family: Arial, sans-serif;
+    color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -9,10 +11,10 @@
   }
 
   .login-container {
-    background-color: #fff;
+    background-color: #343434; /* Slightly lighter gray background */
     border-radius: 8px;
     padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
     text-align: center;
     max-width: 400px; /* Limit the container width */
     width: 100%;
@@ -20,6 +22,7 @@
 
   .login-container h2 {
     margin-bottom: 20px;
+    color: #007bff; /* Blue heading color */
   }
 
   .login-form {
@@ -33,18 +36,20 @@
   }
 
   .login-form input {
-    padding: 10px;
-    border: 1px solid #ccc;
+    padding: 12px; /* Slightly larger input padding */
+    border: 2px solid #007bff; /* Blue border */
     border-radius: 4px;
+    color: #000; /* Text color */
   }
 
   .login-form button {
-    background-color: #000;
+    background-color: #007bff;
     color: #fff;
     border: none;
-    padding: 10px;
+    padding: 12px; /* Slightly larger button padding */
     border-radius: 4px;
     cursor: pointer;
+    font-weight: bold; /* Bold button text */
   }
 
   /* Media Query for smaller screens (e.g., mobile) */
@@ -54,4 +59,92 @@
       border-radius: 4px;
     }
   }
+  .task-list {
+    background-color: #343434; /* Slightly lighter gray background */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    max-width: 800px; /* Adjust the width as needed */
+    padding: 20px;
+    text-align: center;
+    position: relative; /* Set the parent container as relative */
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  th,
+  td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #555; /* Darker border for table */
+    color: #fff;
+  }
+
+  th {
+    background-color: #333; /* Dark header background */
+  }
+
+  th,
+  td,
+  .add-task-button {
+    border-radius: 4px;
+  }
+
+  .task-list-header {
+    position: relative; /* Set the header container as relative */
+  }
+
+  .add-task-button {
+    position: absolute; /* Position relative to the header container */
+    top: 5px; /* Adjust the top position to move the button up */
+    right: 10px;
+    background-color: #007bff; /* Blue button background */
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .task-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Dark overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .task-popup-content {
+    background-color: #343434; /* Slightly lighter gray background */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+  .navbar {
+      background-color: #333; /* Dark background color */
+      overflow: hidden;
+    }
+
+    /* Style the navbar links */
+    .navbar a {
+      float: left;
+      display: block;
+      color: white; /* Text color */
+      text-align: center;
+      padding: 14px 16px; /* Adjust padding as needed */
+      text-decoration: none;
+    }
+
+    /* Change the color of the links on hover */
+    .navbar a:hover {
+      background-color: #007BFF; /* Hover color */
+    }
 </style>

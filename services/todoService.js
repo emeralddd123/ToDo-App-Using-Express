@@ -32,7 +32,6 @@ async function getTodoService (userId, todoId) {
             return { status: 404, message: "Todo not found" };
         }
 
-        console.log('not my fault man')
         return { status: 200, todo };
         
     } catch (error) {
