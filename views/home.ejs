@@ -30,74 +30,80 @@
         </thead>
         <tbody>
           <% tasks.forEach(function(task) { %>
-          <tr>
+          <tr
+            class="task-row"
+            data-bs-toggle="modal"
+            data-bs-target="#taskModal<%= task.id %>"
+          >
             <td><%= task.title %></td>
             <td><%= task.description %></td>
             <td><%= task.status %></td>
           </tr>
+          <!-- Modal for Task <%= task.id %> -->
+          <div
+            class="modal fade"
+            id="taskModal<%= task.id %>"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="taskModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="taskModalLabel">Task Details</h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <!-- Task Details -->
+                  <p><strong>Title:</strong> <%= task.title %></p>
+                  <p><strong>Description:</strong> <%= task.description %></p>
+                  <p><strong>Status:</strong> <%= task.status %></p>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
           <% }); %>
         </tbody>
       </table>
-
-      <br />
-      <!-- Button trigger modal -->
-      <button
-        type="button"
-        class="btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#exampleModal"
-      >
-        Launch demo modal
-      </button>
-
-      <!-- Modal -->
-      <div
-        class="modal fade"
-        id="exampleModal"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">
-                Modal title
-              </h1>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">...</div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="button" class="btn btn-primary">
-                Save changes
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-
     <script>
-      const taskModal = document.getElementById("taskModal");
-      const myInput = document.getElementById("myInput");
+      document.querySelectorAll(".task-row").forEach(function (row) {
+        row.addEventListener("click", function () {
+          const taskId = row
+            .getAttribute("data-target")
+            .replace("#taskModal", "");
+          const task = tasks.find(function (item) {
+            return item.id === taskId;
+          });
 
-      taskModal.addEventListener("shown.bs.modal", () => {
-        myInput.focus();
+          if (task) {
+            document.getElementById("taskModalLabel").innerText =
+              "Task Details";
+            document.getElementById("modalTitle").innerText = task.title;
+            document.getElementById("modalDescription").innerText =
+              task.description;
+            document.getElementById("modalStatus").innerText = task.status;
+          }
+        });
       });
     </script>
-
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
