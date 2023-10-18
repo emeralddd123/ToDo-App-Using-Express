@@ -72,7 +72,7 @@
               </div>
               <div class="modal-body">
                 <!-- Edit Task Form -->
-                <form action="/updateTask/<%= task.id %>" method="PUT">
+                <form action="/updateTask/<%= task.id %>" method="POST">
                   <div class="form-group">
                     <label for="editTitle">Title:</label>
                     <input type="text" class="form-control" id="editTitle" name="title" value="<%= task.title %>" required>
@@ -92,7 +92,7 @@
                     <button type="submit" class="btn btn-primary">Update Task</button>
                   </div>
                 </form>
-                <form action="/deleteTask/<%= task.id %>" method="DELETE">
+                <form action="/deleteTask/<%= task.id %>" method="POST">
                     <input type="hidden" name="taskId" value="<%= task.id %>">
                     <button type="submit" class="btn btn-danger">
                       Delete
@@ -119,7 +119,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <!-- Task creation form -->
+        <!-- Task  form -->
         <form action="/addTask" method="POST">
           <div class="form-group">
             <label for="createTitle">Title:</label>
@@ -137,6 +137,7 @@
     </div>
   </div>
 </div>
+
 
   
     </div>

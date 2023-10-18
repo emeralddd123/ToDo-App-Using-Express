@@ -11,13 +11,10 @@ const app = express();
 connnectToDb()
 
 
-morgan.token('host', function (req, res) {
-    return req.hostname;
-});
 const webRouter = require('./web/webRoutes');
 const apiRouter = require('./api/apiRoutes');
 
-app.use(morgan(':method :host :status :res[content-length] - :response-time ms'))
+app.use(morgan('dev'));
 
 app.use(express.json()) // body parser: json
 app.use(express.urlencoded({ extended: true })); // body prser: formdata

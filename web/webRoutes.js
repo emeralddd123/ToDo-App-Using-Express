@@ -5,7 +5,7 @@ const path = require('path');
 const loginService = require('../services/authService')
 const signupService = require('../services/userService')
 const webAuthMiddleware = require('../middlewares/webAuthMidldleware')
-const { getTodosService, createTodoService, updateTodoService } = require('../services/todoService')
+const { getTodosService, createTodoService, updateTodoService , deleteTodoService} = require('../services/todoService')
 
 const webRouter = express.Router();
 
@@ -27,7 +27,7 @@ webRouter.get('/home', webAuthMiddleware, async (req, res) => {
 });
 
 webRouter.get('/login', async (req, res) => {
-	res.render('login', { pageTitle: 'Login Page' })
+	res.render('login', { user: req.user })
 });
 
 webRouter.post('/login', async (req, res) => {
@@ -37,14 +37,14 @@ webRouter.post('/login', async (req, res) => {
 	if (response.status === 201) {
 
 		res.cookie('jwt', response.token)
-		res.redirect('home')
+		res.redirect('/home')
 	} else {
 		res.render('login')
 	}
 });
 
 webRouter.get('/signup', async (req, res) => {
-	res.render('signup')
+	res.render('signup', { user: req.user })
 });
 
 webRouter.post('/signup', async (req, res) => {
@@ -53,7 +53,7 @@ webRouter.post('/signup', async (req, res) => {
 	const response = await signupService({ email, username, phoneNumber, password })
 	if (response.status === 201) {
 		res.cookie('jwt', response.token)
-		res.redirect('home')
+		res.redirect('/home')
 	} else {
 		const message = response.message
 		res.render('signup', { message })
@@ -68,24 +68,41 @@ webRouter.post('/addTask', webAuthMiddleware, async (req, res) => {
 	const response = await createTodoService(userId, todoData)
 
 	if (response.status === 201) {
-		return res.redirect('home')
+		return res.redirect('/home')
 	}
 	res.json('an error occured')
 
 });
 
 
-webRouter.put('/updateTask/:id', webAuthMiddleware, async (req, res) => {
+webRouter.post('/updateTask/:id', webAuthMiddleware, async (req, res) => {
 	const updatedData = { title, description, status } = req.body
 	const userId = req.user._id
 	const todoId = req.params.id
-
+	
 	const response = await updateTodoService(userId, todoId, updatedData)
 
 	if (response.status = 200) {
-		return res.redirect('home')
+		return res.redirect('/home')
 	}
 	res.json('an error occured')
 })
 
+
+webRouter.post('/deleteTask/:id', webAuthMiddleware, async (req, res) => {
+	const userId = req.user._id
+	const todoId = req.params.id
+	console.log('here')
+	const response = await deleteTodoService(userId, todoId)
+
+	if (response.status = 200) {
+		return res.redirect('/home')
+	}
+	res.json('an error occured')
+})
+
+
+webRouter.get('*', async (req, res) => {
+	res.status(404).render('404', {user:req.user})
+})
 module.exports = webRouter;
