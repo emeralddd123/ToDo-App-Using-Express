@@ -58,5 +58,8 @@ For detailed documentation of the API routes, please visit the [Do-it Documentat
 
 The WebSite is located at [Do-it Web](https://do-it-ayx7.onrender.com)
 
+## ERD
+![image](https://github.com/emeralddd123/ToDo-App-Using-Express/assets/93847541/519673b7-ce70-406a-9270-3c7f6a005414)
+
 ## Screenshots
 
