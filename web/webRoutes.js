@@ -5,7 +5,7 @@ const path = require('path');
 const loginService = require('../services/authService')
 const signupService = require('../services/userService')
 const webAuthMiddleware = require('../middlewares/webAuthMidldleware')
-const { getTodosService, createTodoService, updateTodoService , deleteTodoService} = require('../services/todoService')
+const { getTodosService, createTodoService, updateTodoService, deleteTodoService } = require('../services/todoService')
 
 const webRouter = express.Router();
 
@@ -17,17 +17,9 @@ webRouter.get('/', async (req, res) => {
 	res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-webRouter.get('/home', webAuthMiddleware, async (req, res) => {
-	const response = await getTodosService(req.user._id)
-	if (response.status === 200) {
-		tasks = response.todos
-		return res.render('home', { user: req.user, tasks: tasks })
-	}
-	res.json(response.message)
-});
-
 webRouter.get('/login', async (req, res) => {
-	res.render('login', { user: req.user })
+	let message
+	res.render('login', { user: req.user, message })
 });
 
 webRouter.post('/login', async (req, res) => {
@@ -39,12 +31,24 @@ webRouter.post('/login', async (req, res) => {
 		res.cookie('jwt', response.token)
 		res.redirect('/home')
 	} else {
-		res.render('login')
+		const message = response.message
+		res.render('login', { user: req.user, message })
 	}
 });
 
+webRouter.get('/home', webAuthMiddleware, async (req, res) => {
+	const response = await getTodosService(req.user._id)
+	if (response.status === 200) {
+		tasks = response.todos
+		return res.render('home', { user: req.user, tasks: tasks })
+	}
+	res.json(response.message)
+});
+
+
 webRouter.get('/signup', async (req, res) => {
-	res.render('signup', { user: req.user })
+	let message
+	res.render('signup', { user: req.user, message })
 });
 
 webRouter.post('/signup', async (req, res) => {
@@ -56,7 +60,7 @@ webRouter.post('/signup', async (req, res) => {
 		res.redirect('/home')
 	} else {
 		const message = response.message
-		res.render('signup', { message })
+		res.render('signup', { message, user: req.user })
 	}
 
 });
@@ -79,7 +83,7 @@ webRouter.post('/updateTask/:id', webAuthMiddleware, async (req, res) => {
 	const updatedData = { title, description, status } = req.body
 	const userId = req.user._id
 	const todoId = req.params.id
-	
+
 	const response = await updateTodoService(userId, todoId, updatedData)
 
 	if (response.status = 200) {
@@ -101,8 +105,13 @@ webRouter.post('/deleteTask/:id', webAuthMiddleware, async (req, res) => {
 	res.json('an error occured')
 })
 
+webRouter.get('/logout', (req, res) => {
+	res.clearCookie('jwt')
+	res.redirect('/')
+});
+
 
 webRouter.get('*', async (req, res) => {
-	res.status(404).render('404', {user:req.user})
+	res.status(404).render('404', { user: req.user })
 })
 module.exports = webRouter;
