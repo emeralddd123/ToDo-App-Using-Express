@@ -47,25 +47,25 @@ todoRouter.get('', async (req, res) => {
 
 todoRouter.get('/:id', async (req, res) => {
     try {
-      const todoId = req.params.id;
-      const userId = req.user._id;
-  
-      const result = await todoService.getTodoService(userId, todoId);
-  
-      if (result.status === 200) {
-        res.status(result.status).json({ todo: result.todo });
-      } else if (result.status === 403) {
-        res.status(result.status).json({ error: result.message });
-      } else if (result.status === 404) {
-        res.status(result.status).json({ error: result.message });
-      } else {
-        res.status(result.status).json({ error: "Internal server error" });
-      }
+        const todoId = req.params.id;
+        const userId = req.user._id;
+
+        const result = await todoService.getTodoService(userId, todoId);
+
+        if (result.status === 200) {
+            res.status(result.status).json({ todo: result.todo });
+        } else if (result.status === 403) {
+            res.status(result.status).json({ error: result.message });
+        } else if (result.status === 404) {
+            res.status(result.status).json({ error: result.message });
+        } else {
+            res.status(result.status).json({ error: "Internal server error" });
+        }
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Internal server error" });
+        console.error(error);
+        res.status(500).json({ error: "Internal server error" });
     }
-  });
+});
 
 
 todoRouter.put('/:id', validTodoUpdate, async (req, res) => {
