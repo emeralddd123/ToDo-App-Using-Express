@@ -50,7 +50,7 @@ async function updateTodoService(userId, todoId, updateData) {
         );
 
         if (!updatedTodo) {
-            return { status: 404, message: 'Todo not found or does not belong to the user' };
+            return { status: 404, message: 'Todo not found or does not belong to you' };
         }
 
         return { status: 200, message: 'Todo updated', todo: updatedTodo };
@@ -70,7 +70,7 @@ async function deleteTodoService(userId, todoId) {
         );
 
         if (!deletedTodo) {
-            return { status: 404, message: 'Todo not found or does not belong to the user' };
+            return { status: 404, message: 'Todo not found or does not belong you' };
         }
 
         return { status: 200, message: 'Todo marked as deleted', todo: deletedTodo };
